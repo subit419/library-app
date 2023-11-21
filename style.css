@@ -105,7 +105,9 @@ button, input {
     display: block;
 }
 
-
+.error-msg {
+    display:none;
+}
 
 .main {
     grid-row: 3 / 8;
