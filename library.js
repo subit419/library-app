@@ -139,7 +139,10 @@ const toggleRead = (e) => {
 }
 
 const removeBookCard = (e) => {
-
+  let title = e.target.parentNode.firstChild.textContent;
+  let indexToDelete = myLibrary.books.map(book => book.title).indexOf(title);
+  myLibrary.books.splice(indexToDelete, 1);
+  e.target.parentNode.remove();
 }
 
 const formSubmitted = (e) => {
