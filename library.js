@@ -118,7 +118,6 @@ const createBookCard = (book) => {
 
 }
 
-// TODO 
 const toggleRead = (e) => {
   let title = e.target.parentNode.firstChild.textContent;
   let indexToChange = myLibrary.books.map(book => book.title).indexOf(title);
@@ -135,13 +134,11 @@ const toggleRead = (e) => {
     e.target.textContent = "Read";
     myLibrary.books[indexToChange].toggleRead();
   }
-  
 }
 
 const removeBookCard = (e) => {
   let title = e.target.parentNode.firstChild.textContent;
-  let indexToDelete = myLibrary.books.map(book => book.title).indexOf(title);
-  myLibrary.books.splice(indexToDelete, 1);
+  myLibrary.removeBook(title);
   e.target.parentNode.remove();
 }
 
@@ -150,11 +147,15 @@ const formSubmitted = (e) => {
   e.preventDefault();
 
   const newBook = getBookFromUserInput();
-  myLibrary.addBook(newBook);
-  createBookCard (newBook);
 
-
-  closeAddBookModal();
+  if (myLibrary.isInLibrary(newBook)) {
+    errorMsg.textContent = "This book is already in your library.";
+    errorMsg.classList.add('active');
+  } else {
+    myLibrary.addBook(newBook);
+    createBookCard (newBook);
+    closeAddBookModal();
+  }
 }
 
 // clicking on .modal will cause the click event to propagate like this
@@ -166,23 +167,16 @@ const formSubmitted = (e) => {
 // For extra clarity, here's the code working in codepen.io: https://codepen.io/nbalaguer/pen/PVbEjm
 
 
-const mistBorn = new Book ("Mistborn", "Brandon Sanderson", 1020, false);
-const wayOfKings = new Book ("Way of Kings", "Brandon Sanderson", 1420, true);
+// Page starter data
+const mistBorn = new Book ("Mistborn", "Brandon Sanderson", 1020, true);
+const wayOfKings = new Book ("Way of Kings", "Brandon Sanderson", 1420, false);
 
 myLibrary.addBook(mistBorn);
 createBookCard(mistBorn);
 myLibrary.addBook(wayOfKings);
 createBookCard(wayOfKings);
 
-
-
 // Events / On Click
 addBookBtn.addEventListener('click', openAddBookModal);
 addBookForm.addEventListener('submit', formSubmitted);
 overlay.addEventListener('click', closeAddBookModal);
-
-
-
-
-// const buttons = document.querySelectorAll('button');
-// buttons.forEach(button => button.addEventListener("click", ));
