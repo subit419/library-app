@@ -36,7 +36,7 @@
     background: none;
     border: none;
     width: 30%;
-    height: 90%;
+    height: 50%;
     font-weight: bold;
     border-radius: 15px;
 }
@@ -79,7 +79,7 @@ button, input {
     top: 50%;
     left: 50%;
     width: 300px;
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
     background-color: #f0eef1;
     text-align: center;
@@ -131,27 +131,36 @@ button, input {
     padding: 15px;
     background-color: white;
     border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .book-card p {
     padding: 10px;
 }
 
+.title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
 .button-group {
 
 }
 
 .btn {
-
+    height: 40px;
+    width: 80%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .card-grid {
     margin: 15px;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
     grid-auto-flow: row;
-    gap: 20px;
+    gap: 35px;
 }
 
 .btn-light-green {

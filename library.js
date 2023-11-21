@@ -54,7 +54,7 @@ class Library {
 const myLibrary = new Library();
 
 Book.prototype.toggleRead = function () {
-    this.isReadread = !this.isRead;
+    this.isRead = !this.isRead;
 }
 
 const openAddBookModal = () => {
@@ -88,6 +88,7 @@ const createBookCard = (book) => {
   const btnRemove = document.createElement('button');
 
   bookCard.classList.add('book-card');
+  title.classList.add('title');
   btnGroup.classList.add('button-group');
   btnRead.classList.add('btn');
   btnRemove.classList.add('btn');
@@ -95,8 +96,8 @@ const createBookCard = (book) => {
   btnRemove.onclick = removeBookCard;
 
   title.textContent = book.title;
-  author.textContent = book.author;
-  pages.textContent = book.pages;
+  author.textContent = "By "+ book.author;
+  pages.textContent = "Pages: " + book.pages;
   btnRemove.textContent = 'Remove';
 
   if (book.isRead) {
@@ -119,7 +120,22 @@ const createBookCard = (book) => {
 
 // TODO 
 const toggleRead = (e) => {
+  let title = e.target.parentNode.firstChild.textContent;
+  let indexToChange = myLibrary.books.map(book => book.title).indexOf(title);
 
+  if (myLibrary.books[indexToChange].isRead){
+    e.target.classList.remove('btn-light-green');
+    e.target.classList.add('btn-light-red');
+    e.target.textContent = "Unread";
+    myLibrary.books[indexToChange].toggleRead();
+    
+  } else if (myLibrary.books[indexToChange].isRead == false) {
+    e.target.classList.remove('btn-light-red');
+    e.target.classList.add('btn-light-green');
+    e.target.textContent = "Read";
+    myLibrary.books[indexToChange].toggleRead();
+  }
+  
 }
 
 const removeBookCard = (e) => {
@@ -151,7 +167,9 @@ const mistBorn = new Book ("Mistborn", "Brandon Sanderson", 1020, false);
 const wayOfKings = new Book ("Way of Kings", "Brandon Sanderson", 1420, true);
 
 myLibrary.addBook(mistBorn);
+createBookCard(mistBorn);
 myLibrary.addBook(wayOfKings);
+createBookCard(wayOfKings);
 
 
 
