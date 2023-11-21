@@ -105,6 +105,8 @@ button, input {
     display: block;
 }
 
+
+
 .main {
     grid-row: 3 / 8;
     background-color: lightgrey;
