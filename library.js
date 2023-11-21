@@ -1,4 +1,3 @@
-const myLibrary = [];
 const get = document.getElementById.bind(document);
 const query = document.querySelector.bind(document);
 
@@ -11,6 +10,7 @@ let authorInput = get('author');
 let pagesInput = get('pages');
 let isReadInput = get('isRead');
 let overlay = get('overlay');
+let cardGrid = get('card-grid')
 
 class Book {
     constructor(
@@ -26,13 +26,35 @@ class Book {
     }
   }
 
-Book.prototype.toggleRead = function () {
-    this.isReadread = !this.isRead;
+class Library {
+  constructor() {
+    this.books = []
+  }
+
+  addBook(newBook) {
+    if (!this.isInLibrary(newBook)) {
+      this.books.push(newBook)
+    }
+  }
+
+  removeBook(title) {
+    this.books = this.books.filter((book) => book.title !== title)
+  }
+
+  getBook(title) {
+    return this.books.find((book) => book.title === title)
+  }
+
+  isInLibrary (newBook) {
+    return this.books.some((book) => book.title === newBook.title) 
+  }
+
 }
 
-function addBookToLibrary (Book) {
-    this.book = Book;
-    myLibrary.push(this.book);
+const myLibrary = new Library();
+
+Book.prototype.toggleRead = function () {
+    this.isReadread = !this.isRead;
 }
 
 const openAddBookModal = () => {
@@ -56,10 +78,63 @@ const getBookFromUserInput = () => {
     return new Book (title, author, pages, isRead);
 }
 
-const addBook = (e) => {
+const createBookCard = (book) => {
+  const bookCard = document.createElement('div');
+  const title = document.createElement('p');
+  const author = document.createElement('p');
+  const pages = document.createElement('p');
+  const btnGroup = document.createElement('div');
+  const btnRead = document.createElement('button');
+  const btnRemove = document.createElement('button');
+
+  bookCard.classList.add('book-card');
+  btnGroup.classList.add('button-group');
+  btnRead.classList.add('btn');
+  btnRemove.classList.add('btn');
+  btnRead.onclick = toggleRead;
+  btnRemove.onclick = removeBookCard;
+
+  title.textContent = book.title;
+  author.textContent = book.author;
+  pages.textContent = book.pages;
+  btnRemove.textContent = 'Remove';
+
+  if (book.isRead) {
+    btnRead.textContent = 'Read';
+    btnRead.classList.add ('btn-light-green');
+  } else {
+    btnRead.textContent = 'Unread';
+    btnRead.classList.add ('btn-light-red');
+  }
+
+  bookCard.appendChild(title);
+  bookCard.appendChild(author);
+  bookCard.appendChild(pages);
+  bookCard.appendChild(btnGroup);
+  bookCard.appendChild(btnRead);
+  bookCard.appendChild(btnRemove);
+  cardGrid.appendChild(bookCard);
+
+}
+
+// TODO 
+const toggleRead = (e) => {
+
+}
+
+const removeBookCard = (e) => {
+
+}
+
+const formSubmitted = (e) => {
+  // needed to prevent the page from reloading
   e.preventDefault();
+
   const newBook = getBookFromUserInput();
-  addBookToLibrary(newBook);
+  myLibrary.addBook(newBook);
+  createBookCard (newBook);
+
+
   closeAddBookModal();
 }
 
@@ -75,14 +150,14 @@ const addBook = (e) => {
 const mistBorn = new Book ("Mistborn", "Brandon Sanderson", 1020, false);
 const wayOfKings = new Book ("Way of Kings", "Brandon Sanderson", 1420, true);
 
-addBookToLibrary (mistBorn);
-addBookToLibrary (wayOfKings);
+myLibrary.addBook(mistBorn);
+myLibrary.addBook(wayOfKings);
 
 
 
 // Events / On Click
 addBookBtn.addEventListener('click', openAddBookModal);
-addBookForm.addEventListener('submit', addBook);
+addBookForm.addEventListener('submit', formSubmitted);
 overlay.addEventListener('click', closeAddBookModal);
 
 
